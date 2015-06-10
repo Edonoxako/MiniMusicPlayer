@@ -22,6 +22,7 @@ public class SongsAdapter extends BaseAdapter {
     private LayoutInflater listItemInflater;
     private PlayerController controller;
     private Context context;
+    private View curPlayingView;
 
     public SongsAdapter(Context ctx, PlayerController ctrl,ArrayList<SongMetaData> songs) {
         context = ctx;
@@ -61,7 +62,10 @@ public class SongsAdapter extends BaseAdapter {
             control.setOnClickListener(controlButtonListener);
             control.setTag(position);
 
-            if (song.isPlaying()) control.setBackgroundResource(R.mipmap.pause_icon);
+            if (song.isPlaying()) {
+                control.setBackgroundResource(R.mipmap.pause_icon);
+                curPlayingView = control;
+            }
             else control.setBackgroundResource(R.mipmap.play_icon);
 
             songInfoText.setText(song.getSongName());
@@ -82,6 +86,8 @@ public class SongsAdapter extends BaseAdapter {
                 controller.pause(pos);
                 v.setBackgroundResource(R.mipmap.play_icon);
             } else {
+                if (curPlayingView != null) curPlayingView.setBackgroundResource(R.mipmap.play_icon);
+                curPlayingView = v;
                 controller.play(pos);
                 v.setBackgroundResource(R.mipmap.pause_icon);
             }

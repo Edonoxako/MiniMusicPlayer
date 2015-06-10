@@ -107,6 +107,7 @@ public class MusicPlayerService extends Service implements MediaPlayer.OnPrepare
     public void playSong(int pos) {
         if (pos != curSongPos){
             try {
+                if (curSongPos != -1) songsList.get(curSongPos).setIsPlaying(false);
                 curSongPos = pos;
                 mediaPlayer.reset();
                 mediaPlayer.setDataSource(songsList.get(pos).getPath());

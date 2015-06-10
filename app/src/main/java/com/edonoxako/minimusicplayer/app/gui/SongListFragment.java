@@ -10,9 +10,6 @@ import com.edonoxako.minimusicplayer.app.model.SongMetaData;
 
 import java.util.ArrayList;
 
-/**
- * Created by Dasha on 07.06.2015.
- */
 public class SongListFragment extends ListFragment implements MusicPlayerModelListener {
 
     SongMetaData song;

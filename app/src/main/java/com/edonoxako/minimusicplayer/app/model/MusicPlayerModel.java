@@ -13,9 +13,6 @@ import com.edonoxako.minimusicplayer.app.R;
 import java.io.*;
 import java.util.ArrayList;
 
-/**
- * Created by Dasha on 07.06.2015.
- */
 public class MusicPlayerModel implements SongsDownloaderListener {
 
     private Activity mActivity;
@@ -64,40 +61,6 @@ public class MusicPlayerModel implements SongsDownloaderListener {
         }
     }
 
-    private void loadSongs() {
-        try {
-            SongMetaData song = new SongMetaData();
-            song.setIsPlaying(false);
-            song.setIsDownloaded(false);
-            song.setSongName("Regulator");
-            song.setPath("wwwww");
-            songsList.add(song);
-            listener.songPrepared();
-
-            File songsDir = mActivity.getDir("songs", Context.MODE_PRIVATE);
-            File songFile = new File(songsDir, "regulator.mp3");
-            BufferedInputStream bis = new BufferedInputStream(mActivity.getResources().openRawResource(R.raw.regulator));
-
-            FileOutputStream os = new FileOutputStream(songFile);
-            byte[] buffer = new byte[4096];
-            int bytesRead;
-            while ((bytesRead = bis.read(buffer)) != -1) {
-                os.write(buffer, 0, bytesRead);
-            }
-            bis.close();
-            os.close();
-
-            song.setIsDownloaded(true);
-            song.setPath(songFile.getAbsolutePath());
-            listener.songDownloaded();
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-    }
-
     public void destroyAppModel() {
         mActivity.unbindService(musicServiceConnection);
         if (mActivity.isFinishing()) {
@@ -123,5 +86,15 @@ public class MusicPlayerModel implements SongsDownloaderListener {
         songsList = list;
         musicPlayerService.setSongsList(list);
         listener.songPrepared();
+    }
+
+    @Override
+    public void songDownloaded() {
+        listener.songDownloaded();
+    }
+
+    @Override
+    public void internetUnavailable() {
+
     }
 }
