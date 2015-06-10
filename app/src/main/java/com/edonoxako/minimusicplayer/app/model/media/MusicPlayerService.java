@@ -16,9 +16,6 @@ import com.edonoxako.minimusicplayer.app.model.SongMetaData;
 import java.io.IOException;
 import java.util.ArrayList;
 
-/**
- * Created by Dasha on 07.06.2015.
- */
 public class MusicPlayerService extends Service implements MediaPlayer.OnPreparedListener,
         MediaPlayer.OnErrorListener, MediaPlayer.OnCompletionListener {
 
@@ -62,7 +59,22 @@ public class MusicPlayerService extends Service implements MediaPlayer.OnPrepare
 
     @Override
     public void onCompletion(MediaPlayer mp) {
+        songsList.get(curSongPos).setIsPlaying(false);
 
+        curSongPos++;
+        while (!songsList.get(curSongPos).isDownloaded() && curSongPos < songsList.size()) {
+            curSongPos++;
+        }
+
+        if (curSongPos < songsList.size()) {
+            try {
+                mp.reset();
+                mp.setDataSource(songsList.get(curSongPos).getPath());
+                mp.prepareAsync();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     @Override
@@ -128,7 +140,7 @@ public class MusicPlayerService extends Service implements MediaPlayer.OnPrepare
     }
 
     public class MusicBinder extends Binder {
-        MusicPlayerService getService() {
+        public MusicPlayerService getService() {
             return MusicPlayerService.this;
         }
     }
