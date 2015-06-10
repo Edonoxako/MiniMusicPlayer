@@ -13,9 +13,6 @@ import com.edonoxako.minimusicplayer.app.model.SongMetaData;
 
 import java.util.ArrayList;
 
-/**
- * Created by Dasha on 08.06.2015.
- */
 public class SongsAdapter extends BaseAdapter {
 
     private ArrayList<SongMetaData> songList;

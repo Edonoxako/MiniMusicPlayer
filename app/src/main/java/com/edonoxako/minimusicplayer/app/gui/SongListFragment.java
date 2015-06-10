@@ -3,6 +3,7 @@ package com.edonoxako.minimusicplayer.app.gui;
 import android.app.ListFragment;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.Toast;
 import com.edonoxako.minimusicplayer.app.PlayerController;
 import com.edonoxako.minimusicplayer.app.model.MusicPlayerModel;
 import com.edonoxako.minimusicplayer.app.model.MusicPlayerModelListener;
@@ -12,7 +13,6 @@ import java.util.ArrayList;
 
 public class SongListFragment extends ListFragment implements MusicPlayerModelListener {
 
-    SongMetaData song;
     ArrayList<SongMetaData> data;
     private MusicPlayerModel model;
     private SongsAdapter adapter;
@@ -20,11 +20,6 @@ public class SongListFragment extends ListFragment implements MusicPlayerModelLi
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-    }
-
-    public void setPlaying() {
-        boolean pl = song.isPlaying();
-        song.setIsPlaying(!pl);
     }
 
     public void setModel(MusicPlayerModel m) {
@@ -44,5 +39,10 @@ public class SongListFragment extends ListFragment implements MusicPlayerModelLi
     public void songDownloaded() {
         Log.d("frag", "Song Downloaded");
         adapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void onError(String errorMessage) {
+        Toast.makeText(getActivity(), errorMessage, Toast.LENGTH_SHORT).show();
     }
 }

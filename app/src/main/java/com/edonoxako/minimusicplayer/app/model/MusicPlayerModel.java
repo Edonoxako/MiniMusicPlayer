@@ -6,11 +6,11 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.os.IBinder;
-import android.util.Log;
-import android.view.GestureDetector;
-import com.edonoxako.minimusicplayer.app.R;
+import com.edonoxako.minimusicplayer.app.model.media.MusicPlayerService;
+import com.edonoxako.minimusicplayer.app.model.providers.SongListProvider;
+import com.edonoxako.minimusicplayer.app.model.providers.SongListProviderFactory;
+import com.edonoxako.minimusicplayer.app.model.providers.SongsDownloaderListener;
 
-import java.io.*;
 import java.util.ArrayList;
 
 public class MusicPlayerModel implements SongsDownloaderListener {
@@ -21,7 +21,7 @@ public class MusicPlayerModel implements SongsDownloaderListener {
     private boolean isBound = false;
     private ArrayList<SongMetaData> songsList;
     private MusicPlayerModelListener listener;
-    private SongsDownloader downloader;
+    private SongListProvider downloader;
 
     private ServiceConnection musicServiceConnection = new ServiceConnection() {
         @Override
@@ -53,7 +53,8 @@ public class MusicPlayerModel implements SongsDownloaderListener {
 
     public void initAppModel(Activity activity) {
         mActivity = activity;
-        downloader = new SongsDownloader(this, mActivity);
+        downloader = new SongListProviderFactory().getProvider(mActivity);
+        downloader.registerProviderListener(this);
         if (playIntent == null) {
             playIntent = new Intent(mActivity, MusicPlayerService.class);
             mActivity.bindService(playIntent, musicServiceConnection, Context.BIND_AUTO_CREATE);
@@ -95,6 +96,11 @@ public class MusicPlayerModel implements SongsDownloaderListener {
 
     @Override
     public void internetUnavailable() {
+        listener.onError("Internet unavailable");
+    }
 
+    @Override
+    public void errorOccurred(int errorCode) {
+        listener.onError("Something goes wrong! Error Code " + errorCode);
     }
 }

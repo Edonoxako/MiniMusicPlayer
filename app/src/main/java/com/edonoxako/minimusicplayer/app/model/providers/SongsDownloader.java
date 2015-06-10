@@ -1,15 +1,15 @@
-package com.edonoxako.minimusicplayer.app.model;
+package com.edonoxako.minimusicplayer.app.model.providers;
 
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-import android.util.Log;
+import com.edonoxako.minimusicplayer.app.model.SongMetaData;
 import com.parse.*;
 
 import java.io.*;
 import java.util.ArrayList;
 
-public class SongsDownloader {
+public class SongsDownloader implements SongListProvider {
 
     private SongsDownloaderListener listener;
     private Context context;
@@ -25,12 +25,17 @@ public class SongsDownloader {
 
     private boolean isOnline = true;
 
-    public SongsDownloader(SongsDownloaderListener lster, Context ctx) {
-        listener = lster;
+    public SongsDownloader(Context ctx) {
         context = ctx;
         songList = new ArrayList<SongMetaData>();
     }
 
+    @Override
+    public void registerProviderListener(SongsDownloaderListener songsDownloaderListener) {
+        listener = songsDownloaderListener;
+    }
+
+    @Override
     public void loadSongs() {
         if (context.getFileStreamPath(SONG_LIST_FILENAME).exists()) {
             getSongData(SONG_LIST_FILENAME);
@@ -42,7 +47,7 @@ public class SongsDownloader {
         }
     }
 
-    public void downloadSongsList() {
+    private void downloadSongsList() {
         ParseQuery<ParseObject> query = new ParseQuery<ParseObject>(SONG_LIST_CLASS);
         query.getInBackground(SONG_LIST_ID, new GetCallback<ParseObject>() {
             @Override
@@ -60,15 +65,15 @@ public class SongsDownloader {
                                 listener.songsListDownloaded(songList);
                                 syncSongsList();
                             } else {
-                                //TODO: Обработка ошибки
                                 e.printStackTrace();
+                                listener.errorOccurred(e.getCode());
                             }
 
                         }
                     });
                 } else {
-                    //TODO: Обработка ошибки
                     e.printStackTrace();
+                    listener.errorOccurred(e.getCode());
                 }
 
             }
@@ -110,25 +115,23 @@ public class SongsDownloader {
 
                 if (e == null) {
                     ParseFile file = (ParseFile) parseObject.get(SONG_COLUMN);
-                    Log.d("downloader", "Downloading...");
                     file.getDataInBackground(new GetDataCallback() {
                         @Override
                         public void done(byte[] bytes, ParseException e) {
 
                             if (e == null) {
-                                Log.d("downloader", "Downloaded! Saving...");
                                 saveData(songName, bytes);
-                                Log.d("downloader", "Saved! Updating...");
                                 updateSongsData(index, songName);
-                                Log.d("downloader", "Updated!");
                             } else {
                                 e.printStackTrace();
+                                listener.errorOccurred(e.getCode());
                             }
 
                         }
                     });
                 } else {
                     e.printStackTrace();
+                    listener.errorOccurred(e.getCode());
                 }
 
             }

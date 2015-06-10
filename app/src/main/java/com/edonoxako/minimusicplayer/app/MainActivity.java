@@ -5,8 +5,6 @@ import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import com.edonoxako.minimusicplayer.app.gui.SongListFragment;
 import com.edonoxako.minimusicplayer.app.model.MusicPlayerModel;
-import com.edonoxako.minimusicplayer.app.model.SongsDownloader;
-import com.parse.ParseObject;
 
 public class MainActivity extends FragmentActivity implements PlayerController {
 

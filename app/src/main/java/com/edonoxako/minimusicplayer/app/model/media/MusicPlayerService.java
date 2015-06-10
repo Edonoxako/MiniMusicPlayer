@@ -1,4 +1,4 @@
-package com.edonoxako.minimusicplayer.app.model;
+package com.edonoxako.minimusicplayer.app.model.media;
 
 import android.app.Notification;
 import android.app.PendingIntent;
@@ -11,6 +11,7 @@ import android.os.IBinder;
 import android.os.PowerManager;
 import com.edonoxako.minimusicplayer.app.MainActivity;
 import com.edonoxako.minimusicplayer.app.R;
+import com.edonoxako.minimusicplayer.app.model.SongMetaData;
 
 import java.io.IOException;
 import java.util.ArrayList;

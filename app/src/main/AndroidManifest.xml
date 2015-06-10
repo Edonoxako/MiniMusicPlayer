@@ -23,7 +23,7 @@
         </activity>
 
         <service
-                android:name=".model.MusicPlayerService"
+                android:name=".model.media.MusicPlayerService"
                 android:exported="false"/>
 
     </application>
