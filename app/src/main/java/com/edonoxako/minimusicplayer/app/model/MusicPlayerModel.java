@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.os.IBinder;
+import android.util.Log;
 import android.view.GestureDetector;
 import com.edonoxako.minimusicplayer.app.R;
 
@@ -15,7 +16,7 @@ import java.util.ArrayList;
 /**
  * Created by Dasha on 07.06.2015.
  */
-public class MusicPlayerModel {
+public class MusicPlayerModel implements SongsDownloaderListener {
 
     private Activity mActivity;
     private MusicPlayerService musicPlayerService;
@@ -23,6 +24,7 @@ public class MusicPlayerModel {
     private boolean isBound = false;
     private ArrayList<SongMetaData> songsList;
     private MusicPlayerModelListener listener;
+    private SongsDownloader downloader;
 
     private ServiceConnection musicServiceConnection = new ServiceConnection() {
         @Override
@@ -32,8 +34,7 @@ public class MusicPlayerModel {
 
             ArrayList<SongMetaData> data = musicPlayerService.getSongsList();
             if (data == null) {
-                musicPlayerService.setSongsList(songsList);
-                loadSongs();
+                downloader.loadSongs();
             } else {
                 songsList = data;
                 listener.songPrepared();
@@ -55,6 +56,7 @@ public class MusicPlayerModel {
 
     public void initAppModel(Activity activity) {
         mActivity = activity;
+        downloader = new SongsDownloader(this, mActivity);
         if (playIntent == null) {
             playIntent = new Intent(mActivity, MusicPlayerService.class);
             mActivity.bindService(playIntent, musicServiceConnection, Context.BIND_AUTO_CREATE);
@@ -116,4 +118,10 @@ public class MusicPlayerModel {
         musicPlayerService.pauseSong(pos);
     }
 
+    @Override
+    public void songsListDownloaded(ArrayList<SongMetaData> list) {
+        songsList = list;
+        musicPlayerService.setSongsList(list);
+        listener.songPrepared();
+    }
 }

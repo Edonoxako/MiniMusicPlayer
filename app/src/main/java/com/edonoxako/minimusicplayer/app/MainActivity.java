@@ -5,6 +5,7 @@ import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import com.edonoxako.minimusicplayer.app.gui.SongListFragment;
 import com.edonoxako.minimusicplayer.app.model.MusicPlayerModel;
+import com.edonoxako.minimusicplayer.app.model.SongsDownloader;
 import com.parse.ParseObject;
 
 public class MainActivity extends FragmentActivity implements PlayerController {
@@ -20,10 +21,6 @@ public class MainActivity extends FragmentActivity implements PlayerController {
         mSongListFrag = (SongListFragment) getFragmentManager().findFragmentById(R.id.music_content);
         mModel = new MusicPlayerModel(mSongListFrag);
         mSongListFrag.setModel(mModel);
-
-        ParseObject testObject = new ParseObject("TestObject");
-        testObject.put("foo", "bar");
-        testObject.saveInBackground();
     }
 
     @Override
