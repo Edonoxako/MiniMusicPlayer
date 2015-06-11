@@ -6,4 +6,5 @@ package com.edonoxako.minimusicplayer.app;
 public interface PlayerController {
     void play(int songPos);
     void pause(int songPos);
+    void refresh();
 }

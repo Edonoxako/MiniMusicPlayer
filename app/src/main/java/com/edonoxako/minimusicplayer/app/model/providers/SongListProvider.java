@@ -6,4 +6,5 @@ package com.edonoxako.minimusicplayer.app.model.providers;
 public interface SongListProvider {
     void registerProviderListener(SongsDownloaderListener songsDownloaderListener);
     void loadSongs();
+    void refresh();
 }

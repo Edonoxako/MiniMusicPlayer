@@ -47,6 +47,19 @@ public class SongsDownloader implements SongListProvider {
         }
     }
 
+    @Override
+    public void refresh() {
+        File songsDir = context.getFilesDir();
+        for (File file : songsDir.listFiles()) {
+            file.delete();
+        }
+        if (songList != null) {
+            songList.clear();
+        }
+        listener.songListDeleting();
+        loadSongs();
+    }
+
     private void downloadSongsList() {
         ParseQuery<ParseObject> query = new ParseQuery<ParseObject>(SONG_LIST_CLASS);
         query.getInBackground(SONG_LIST_ID, new GetCallback<ParseObject>() {

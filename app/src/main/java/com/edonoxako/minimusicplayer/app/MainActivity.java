@@ -1,12 +1,13 @@
 package com.edonoxako.minimusicplayer.app;
 
 import android.os.Bundle;
-import android.support.v4.app.FragmentActivity;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.widget.Toast;
 import com.edonoxako.minimusicplayer.app.gui.SongListFragment;
 import com.edonoxako.minimusicplayer.app.model.MusicPlayerModel;
 
-public class MainActivity extends FragmentActivity implements PlayerController {
+public class MainActivity extends AppCompatActivity implements PlayerController {
 
     MusicPlayerModel mModel;
     SongListFragment mSongListFrag;
@@ -41,5 +42,10 @@ public class MainActivity extends FragmentActivity implements PlayerController {
     public void pause(int pos) {
         mModel.pauseSong(pos);
         Log.d("controller", "pausing");
+    }
+
+    @Override
+    public void refresh() {
+        mModel.refreshSongsList();
     }
 }

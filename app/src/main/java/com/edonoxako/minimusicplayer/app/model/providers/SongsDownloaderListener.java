@@ -9,4 +9,5 @@ public interface SongsDownloaderListener {
     void songDownloaded();
     void internetUnavailable();
     void errorOccurred(int errorCode);
+    void songListDeleting();
 }

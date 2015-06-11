@@ -70,6 +70,10 @@ public class MusicPlayerModel implements SongsDownloaderListener {
         musicPlayerService = null;
     }
 
+    public void refreshSongsList() {
+        downloader.refresh();
+    }
+
     public ArrayList<SongMetaData> getSongsList() {
         return songsList;
     }
@@ -102,5 +106,13 @@ public class MusicPlayerModel implements SongsDownloaderListener {
     @Override
     public void errorOccurred(int errorCode) {
         listener.onError("Something goes wrong! Error Code " + errorCode);
+    }
+
+    @Override
+    public void songListDeleting() {
+        if (musicPlayerService.getSongsList() != null) {
+            musicPlayerService.getSongsList().clear();
+        }
+        listener.songListDeleting();
     }
 }
