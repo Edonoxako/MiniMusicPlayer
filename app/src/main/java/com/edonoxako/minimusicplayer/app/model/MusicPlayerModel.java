@@ -6,7 +6,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.os.IBinder;
+import com.edonoxako.minimusicplayer.app.R;
 import com.edonoxako.minimusicplayer.app.model.media.MusicPlayerService;
+import com.edonoxako.minimusicplayer.app.model.media.MusicPlayerServiceListener;
 import com.edonoxako.minimusicplayer.app.model.providers.SongListProvider;
 import com.edonoxako.minimusicplayer.app.model.providers.SongListProviderFactory;
 import com.edonoxako.minimusicplayer.app.model.providers.SongsDownloaderListener;
@@ -23,11 +25,19 @@ public class MusicPlayerModel implements SongsDownloaderListener {
     private MusicPlayerModelListener listener;
     private SongListProvider downloader;
 
+    private MusicPlayerServiceListener musicPlayerServiceListener = new MusicPlayerServiceListener() {
+        @Override
+        public void onMusicPlayerStateChanged() {
+            listener.songDownloaded();
+        }
+    };
+
     private ServiceConnection musicServiceConnection = new ServiceConnection() {
         @Override
         public void onServiceConnected(ComponentName name, IBinder service) {
             MusicPlayerService.MusicBinder binder = (MusicPlayerService.MusicBinder) service;
             musicPlayerService = binder.getService();
+            musicPlayerService.registerListener(musicPlayerServiceListener);
 
             ArrayList<SongMetaData> data = musicPlayerService.getSongsList();
             if (data == null) {
@@ -100,12 +110,12 @@ public class MusicPlayerModel implements SongsDownloaderListener {
 
     @Override
     public void internetUnavailable() {
-        listener.onError("Internet unavailable");
+        listener.onError(mActivity.getResources().getString(R.string.internet_unavailable));
     }
 
     @Override
     public void errorOccurred(int errorCode) {
-        listener.onError("Something goes wrong! Error Code " + errorCode);
+        listener.onError(mActivity.getResources().getString(R.string.error) + errorCode);
     }
 
     @Override

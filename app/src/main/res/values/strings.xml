@@ -1,4 +1,7 @@
 <resources>
     <string name="app_name">MiniMusicPlayer</string>
-    <string name="hello_world">Hello world!</string>
+    <string name="refreshing">Refreshing</string>
+    <string name="error">Something goes wrong! Error Code </string>
+    <string name="internet_unavailable">Internet unavailable</string>
+    <string name="downloading">Songs are being downloaded</string>
 </resources>

@@ -2,12 +2,9 @@ package com.edonoxako.minimusicplayer.app.gui;
 
 import android.app.ListFragment;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.ListView;
 import android.widget.Toast;
 import com.edonoxako.minimusicplayer.app.PlayerController;
 import com.edonoxako.minimusicplayer.app.R;
@@ -59,11 +56,11 @@ public class SongListFragment extends ListFragment implements MusicPlayerModelLi
             adapter = new SongsAdapter(getActivity(), (PlayerController) getActivity(), data);
             setListAdapter(adapter);
         }
+        Toast.makeText(getActivity(), getResources().getString(R.string.downloading), Toast.LENGTH_SHORT).show();
     }
 
     @Override
     public void songDownloaded() {
-        Log.d("frag", "Song Downloaded");
         adapter.notifyDataSetChanged();
     }
 
@@ -74,7 +71,7 @@ public class SongListFragment extends ListFragment implements MusicPlayerModelLi
             setListAdapter(null);
             adapter = null;
         }
-        Toast.makeText(getActivity(), "Refreshing", Toast.LENGTH_SHORT).show();
+        Toast.makeText(getActivity(), getResources().getText(R.string.refreshing), Toast.LENGTH_SHORT).show();
     }
 
     @Override

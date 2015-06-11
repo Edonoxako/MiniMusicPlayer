@@ -25,6 +25,7 @@ public class MusicPlayerService extends Service implements MediaPlayer.OnPrepare
     private IBinder musicBinder = new MusicBinder();
     private ArrayList<SongMetaData> songsList;
     private int curSongPos = -1;
+    private MusicPlayerServiceListener listener;
 
     private void initMusicPlayer() {
         mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
@@ -85,6 +86,7 @@ public class MusicPlayerService extends Service implements MediaPlayer.OnPrepare
     @Override
     public void onPrepared(MediaPlayer mp) {
         songsList.get(curSongPos).setIsPlaying(true);
+        listener.onMusicPlayerStateChanged();
         mp.start();
         prepareAndStartForeground();
     }
@@ -93,7 +95,6 @@ public class MusicPlayerService extends Service implements MediaPlayer.OnPrepare
         String songName = songsList.get(curSongPos).getSongName();
 
         Intent intent = new Intent(this, MainActivity.class);
-        //intent.setFlags(Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT);
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
 
         Notification.Builder builder = new Notification.Builder(this);
@@ -139,9 +140,14 @@ public class MusicPlayerService extends Service implements MediaPlayer.OnPrepare
         mediaPlayer.pause();
     }
 
+    public void registerListener(MusicPlayerServiceListener musicPlayerServiceListener) {
+        listener = musicPlayerServiceListener;
+    }
+
     public class MusicBinder extends Binder {
         public MusicPlayerService getService() {
             return MusicPlayerService.this;
         }
     }
+
 }
