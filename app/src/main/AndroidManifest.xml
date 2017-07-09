@@ -27,6 +27,12 @@
                 android:name=".model.media.MusicPlayerService"
                 android:exported="false"/>
 
+        <service android:name=".playback.AudioBrowserService">
+            <intent-filter>
+                <action android:name="android.media.browse.MediaBrowserService"/>
+            </intent-filter>
+        </service>
+
     </application>
 
 </manifest>
