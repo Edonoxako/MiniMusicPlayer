@@ -2,27 +2,23 @@ package com.edonoxako.minimusicplayer.app;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
-import android.widget.Toast;
-import com.edonoxako.minimusicplayer.app.gui.SongListFragment;
-import com.edonoxako.minimusicplayer.app.model.MusicPlayerModel;
 
-public class MainActivity extends AppCompatActivity implements PlayerController {
+public class MainActivity extends AppCompatActivity {
 
-    MusicPlayerModel mModel;
-    SongListFragment mSongListFrag;
+    /*MusicPlayerModel mModel;
+    SongListFragment mSongListFrag;*/
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        mSongListFrag = (SongListFragment) getFragmentManager().findFragmentById(R.id.music_content);
+       /* mSongListFrag = (SongListFragment) getFragmentManager().findFragmentById(R.id.music_content);
         mModel = new MusicPlayerModel(mSongListFrag);
-        mSongListFrag.setModel(mModel);
+        mSongListFrag.setModel(mModel);*/
     }
 
-    @Override
+    /*@Override
     protected void onStart() {
         super.onStart();
         mModel.initAppModel(this);
@@ -47,5 +43,5 @@ public class MainActivity extends AppCompatActivity implements PlayerController 
     @Override
     public void refresh() {
         mModel.refreshSongsList();
-    }
+    }*/
 }

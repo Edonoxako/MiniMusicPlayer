@@ -11,6 +11,6 @@ public class MiniMusicApp extends Application{
     @Override
     public void onCreate() {
         super.onCreate();
-        Parse.initialize(this, APPLICATION_ID, CLIENT_ID);
+//        Parse.initialize(this, APPLICATION_ID, CLIENT_ID);
     }
 }
